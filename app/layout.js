@@ -1,5 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Providers from "./providers/providers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -20,8 +22,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+      <body suppressHydrationWarning={true} className={`${geistSans.variable} ${geistMono.variable} min-vh-100`}>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
