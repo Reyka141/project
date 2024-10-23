@@ -3,26 +3,33 @@
 import { useTonWallet, TonConnectButton } from "@tonconnect/ui-react";
 import { useEffect, useState } from "react";
 
-const manifestUrl =
-  "https://ton-connect.github.io/demo-dapp-with-react-ui/tonconnect-manifest.json";
-
 export default function Header() {
   const wallet = useTonWallet();
   const [balance, setBalance] = useState(null);
   const address = wallet?.account?.address;
-  const url = `https://toncenter.com/api/v2/getAddressInformation?address=${address}`;
+
   useEffect(() => {
-    if (wallet) {
-      fetch(url)
+    if (wallet && address) {
+      fetch(`/api/getBalance?address=${address}`)
         .then((response) => response.json())
-        .then((data) => setBalance(data?.result?.balance))
+        .then((data) => {
+          if (data.error) {
+            console.error("Error:", data.error);
+          } else {
+            setBalance(data.balance);
+          }
+        })
         .catch((error) => console.error("Error:", error));
     }
-  }, [wallet, url]);
+  }, [wallet, address]);
 
   return (
     <header>
-      {wallet && <p>Balance: {balance} TON</p>}
+      {wallet ? (
+        <p>Balance: {balance === null ? "Loading..." : `${balance} TON`}</p>
+      ) : (
+        <p>Connect your wallet</p>
+      )}
       <TonConnectButton />
     </header>
   );
