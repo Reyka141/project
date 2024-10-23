@@ -1,5 +1,6 @@
 "use client";
 import { useTonWallet, useTonAddress  } from "@tonconnect/ui-react";
+import Link from "next/link";
 
 export default function Body() {
   const wallet = useTonWallet();
@@ -12,6 +13,9 @@ export default function Body() {
     <main>
       <div>
         <p>{`Address wallet: ${userFriendlyAddress}`}</p>
+      </div>
+      <div>
+        <Link href="/transactions">Do transaction</Link>
       </div>
     </main>
   );
